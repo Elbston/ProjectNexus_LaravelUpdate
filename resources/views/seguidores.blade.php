@@ -16,7 +16,25 @@
 
     <div class="d-flex flex-column gap-3">
         @foreach ($users_foreach as $f)
-        @if(Auth::check() && Auth::user()->nickname != $f->user_nickname)
+        @if(Auth::check())
+        @if ($f->user_nickname == Auth::user()->nickname)
+        <div class="card shadow-sm rounded-3 border-0">
+            <div class="card-body d-flex align-items-center justify-content-between flex-wrap">
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-user-circle fa-2x me-3 text-primary"></i>
+                    <div>
+                        <a href="{{ route('user_index', ['nickname' => $f->user_nickname]) }}"
+                            class="text-decoration-none text-dark fw-bold fs-5">
+                            {{ '@'.$f->user_nickname }} (você)
+                        </a>
+                        <p class="mb-0 text-muted">
+                            {{ $f->title != '' ? $f->title : 'Usuário sem descrição' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
         <div class="card shadow-sm rounded-3 border-0">
             <div class="card-body d-flex align-items-center justify-content-between flex-wrap">
                 <div class="d-flex align-items-center">
@@ -92,6 +110,7 @@
                 @endauth
             </div>
         </div>
+        @endif
         @endif
         @endforeach
     </div>
